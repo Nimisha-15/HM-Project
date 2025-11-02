@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
         type : String ,
         required : true ,
     },
-    discription : {
+    description : {
         type : String ,
         required : true ,
     },
@@ -14,7 +14,8 @@ const productSchema = new mongoose.Schema({
     },
     sizes : {
         type: String,
-        enum : ['s' , 'm' , 'l' , 'xl']
+        enum : ['s' , 'm' , 'l' , 'xl'],
+        default:["m"]
     },
     price :{
         amount : {
@@ -38,4 +39,4 @@ const productSchema = new mongoose.Schema({
 })
 
 const productModel = mongoose.model("products" , productSchema);
-module.export = productModel;
+module.exports=productModel

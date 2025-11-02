@@ -6,13 +6,14 @@ const registerController = async(req,res)=>{
     try {
         const {name , email ,phone , password , size ,discription} = req.body ;
 
-    if(!name || !email || !phone || !password || !size || !discription) return res.status(422).json({
+    if(!name || !email || !phone || !password ) return res.status(422).json({
         message : "all feilds are required",
     })
 
-    const user = await userModel.findOne(email);
+    const user = await userModel.findOne({email});
     if(user) return res.status(404).json({
         message : "user already register",
+        
     })
 
     const newUser = await userModel.create({
@@ -21,11 +22,13 @@ const registerController = async(req,res)=>{
 
     res.status(200).json({
         message : 'user successfully register',
+        user:newUser
     })
     } catch (error) {
         console.log(" error in register --> ", error)
         return res.status(401).json({
             messsage : "Error in register the user ",
+            error:error
         })
     }
 }
@@ -50,7 +53,7 @@ const loginController = async (req,res)=>{
         message : "incorrect password ",
     })
 
-    const token = jwt.sign({id : user._id} , process.env.JWT_SECRET{
+    const token = jwt.sign({id : user._id} , process.env.JWT_SECRET,{
         expiresIn : "1h"
     })
     res.cookies ("token " , token );
@@ -66,9 +69,21 @@ const loginController = async (req,res)=>{
    }
 }
 
-const logoutController 
+// const logoutController = async (req,res)=>{
+//     try {
+        
+//     } catch (error) {
+//         console.log("error in logout -->", error );
+//         return res.status(400).json({
+//             message : "error in logout ",
+//         })
+//     }
+// }
 
-module.export = {
+
+
+module.exports = {
     registerController ,
     loginController,
+    
 }
